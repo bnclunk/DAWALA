@@ -147,7 +147,8 @@ app.post('/login', async (req, res) => {
     const rows = await sheet.getRows();
     const users = rowsToJSON(rows);
     
-    const user = users.find(u => u.username === username && u.password === password);
+    // Menggunakan String() untuk memastikan perbandingan tipe data yang konsisten (menghindari bug tipe number di sheet)
+    const user = users.find(u => String(u.username) === String(username) && String(u.password) === String(password));
     if (user) {
         res.json({ status: 'ok', user: { username: user.username, role: user.role, rt: user.rt } });
     } else {
