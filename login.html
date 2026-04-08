@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Pengurus - DAWALA</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -53,12 +53,12 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 240px;
-            height: 240px;
-            background: #eef2ff;
+            width: 80px;
+            height: 80px;
+            background: var(--primary-light);
             color: var(--primary);
             border-radius: 20px;
-            margin-bottom: 0.025rem;
+            margin-bottom: 1rem;
         }
 
         .brand-name {
@@ -184,7 +184,6 @@
             const DEFAULT_SETTINGS = {
                 neighborhoodName: 'RW 07 Kelurahan Babakan',
                 address: 'Jl. Kemang Raya No. 123, Jakarta Selatan',
-                password: 'admin123',
                 logo: null
             };
             const settings = JSON.parse(localStorage.getItem('settings')) || DEFAULT_SETTINGS;
@@ -201,10 +200,16 @@
             }
 
             // Handle login form
-            document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            const loginForm = document.getElementById('loginForm');
+            const loginBtn = loginForm.querySelector('.btn');
+
+            loginForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 const username = document.getElementById('username').value;
                 const password = document.getElementById('password').value;
+                
+                loginBtn.innerText = 'Memproses...';
+                loginBtn.disabled = true;
 
                 try {
                     const res = await fetch('/login', {
@@ -223,6 +228,9 @@
                     }
                 } catch (err) {
                     alert('Koneksi server gagal');
+                } finally {
+                    loginBtn.innerText = 'Masuk ke Panel';
+                    loginBtn.disabled = false;
                 }
             });
         });
