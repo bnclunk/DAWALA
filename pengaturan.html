@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengaturan - DAWALA</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="sidebar-overlay"></div>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="sidebar-brand-main">
+                    <div class="sidebar-logo">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    </div>
+                    <h2>DAWALA</h2>
+                </div>
+                <p id="sidebar-neighborhood-name" class="sidebar-brand-desc"></p>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+                    Dashboard
+                </a>
+                <a href="warga.html" class="nav-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 01-9-3.812M13.732 11.108a2 2 0 112.828 2.828M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    Data Warga
+                </a>
+                <a href="keuangan.html" class="nav-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12V7H5a2 2 0 0 1 0-4h14v4" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5v14a2 2 0 0 0 2 2h16v-5" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 12a2 2 0 0 0 0 4h4v-4h-4z" /></svg>
+                    Kas Lingkungan
+                </a>
+                <a href="galeri.html" class="nav-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h14a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                    Galeri Kegiatan
+                </a>
+                <a href="pengaturan.html" class="nav-item active">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                    Pengaturan
+                </a>
+            </nav>
+            
+            <div class="sidebar-extras">
+                <p class="extra-label">Support Us!</p>
+                <div class="extra-grid cols-4">
+                    <a href="../assets/img/logo e wallet/QRIS.jpeg" class="extra-btn" target="_blank"><img src="../assets/img/logo e wallet/QRIS.png" alt="Gopay" style="height: 20px;">QRIS</a>                    
+                    <a href="https://saweria.co/golodogmaijoh" class="extra-btn" target="_blank"><img src="../assets/img/logo e wallet/saweria.png" alt="Saweria" style="height: 20px;">SAWERIA</a>
+                </div>
+                <p class="extra-label" style="margin-top: 1rem;">Social Media</p>
+                <div class="extra-grid cols-4">
+                    <a href="https://www.facebook.com/DadynyaKeyziaDarraNabilla" class="extra-btn" target="_blank"><img src="../assets/img/sosial media/facebook.png" alt="Facebook" style="height: 20px;"></a>
+                    <a href="https://www.instagram.com/om.bnclunk" class="extra-btn" target="_blank"><img src="../assets/img/sosial media/instagram.png" alt="Instagram" style="height: 20px;"></a>
+                    <a href="https://www.tiktok.com/@asep.supriatna.bnclunk" class="extra-btn" target="_blank"><img src="../assets/img/sosial media/tiktok.png" alt="TikTok" style="height: 20px;"></a>
+                    <a href="https://www.youtube.com/@OmBnclunk" class="extra-btn" target="_blank"><img src="../assets/img/sosial media/youtube.png" alt="YouTube" style="height: 20px;"></a>
+                </div>
+                <p style="font-size: 0.65rem; color: var(--text-muted); font-weight: 700; margin-top: 1rem; text-align: center; line-height: 1.4; opacity: 0.8;">DAWALA<br>(Data Warga & Layanan Administrasi)</p>
+            </div>
+
+            <div style="margin-top: 2rem; border-top: 1px solid var(--border); padding-top: 1.5rem;">
+                <a href="login.html" class="nav-item" style="color: var(--danger);">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+                    Keluar Admin
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="mobile-header">
+                <div class="mobile-brand">
+                    <div class="sidebar-logo">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    </div>
+                    <h2>DAWALA</h2>
+                </div>
+                <button class="mobile-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                </button>
+            </header>
+            <header class="header-title">
+                <h1>Pengaturan Sistem</h1>
+                <p>Konfigurasi identitas lingkungan dan keamanan panel admin.</p>
+            </header>
+
+            <div class="settings-grid">
+                <!-- Main Settings -->
+                <div class="settings-left">
+                    <section class="settings-card">
+                        <div class="card-icon-header">
+                            <div class="icon-box" style="background: var(--primary-light); color: var(--primary);">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                            </div>
+                            <h3>Identitas Lingkungan</h3>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Nama Wilayah / RW</label>
+                            <input type="text" id="input-neighborhood-name" class="form-control" value="RW 01 Kemang Jaya">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Alamat Lengkap</label>
+                            <textarea id="input-address" class="form-control">Jl. Kemang Raya No. 123, Kelurahan Kemang Jaya, Jakarta Selatan</textarea>
+                        </div>
+                        
+                        <button id="btn-save-profile" class="btn-primary" style="width: auto;">Simpan Profil</button>
+                    </section>
+
+                    <section class="settings-card">
+                        <div class="card-icon-header">
+                            <div class="icon-box" style="background: #ecfdf5; color: #10b981;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                            </div>
+                            <h3>Unit RW/RT</h3>
+                        </div>
+                        
+                        <p class="section-desc">Kelola daftar Rukun Warga dan Rukun Tetangga yang berada di bawah naungan wilayah ini.</p>
+                        
+                        <div class="input-inline-group">
+                            <input type="text" id="input-rt-name" class="form-control" placeholder="Contoh: RT 08">
+                            <button id="btn-add-rt" class="btn-primary btn-sm-auto">Tambah</button>
+                        </div>
+
+                        <div class="rt-tags-container">
+                            <!-- Loaded via main.js -->
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Side Settings -->
+                <div class="settings-right">
+                    <section class="settings-card">
+                        <div class="card-icon-header">
+                            <div class="icon-box" style="background: #fffbeb; color: #f59e0b;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                            </div>
+                            <h3>Logo</h3>
+                        </div>
+                        <div style="text-align: center; border: 2px dashed var(--border); padding: 2rem; border-radius: 1.5rem; background: var(--bg-light); cursor: pointer;" onclick="document.getElementById('input-logo-file').click()">
+                            <div id="settings-logo-preview" style="background: var(--white); width: 80px; height: 80px; border-radius: 1rem; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm);">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-muted);"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                            </div>
+                            <p style="font-size: 0.75rem; font-weight: 700; color: var(--primary);">Ganti Logo</p>
+                            <p style="font-size: 0.625rem; color: var(--text-muted); margin-top: 0.5rem;">Format JPG, PNG (Max 2MB)</p>
+                            <input type="file" id="input-logo-file" accept="image/*" style="display: none;">
+                        </div>
+                    </section>
+
+                    <section class="settings-card">
+                        <div class="card-icon-header">
+                            <div class="icon-box" style="background: #eef2ff; color: #4f46e5;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+                            </div>
+                            <h3>Manajemen Pengguna</h3>
+                        </div>
+                        <form id="form-tambah-pengguna">
+                            <div class="form-group"><input type="text" id="user-username" class="form-control" placeholder="Username" required></div>
+                            <div class="form-group"><input type="password" id="user-password" class="form-control" placeholder="Password" required></div>
+                            <div class="form-group"><select id="user-rt" class="form-control" required></select></div>
+                            <button type="submit" class="btn-primary">Tambah Akun</button>
+                        </form>
+                        <div id="user-list-container" class="user-list-wrapper">
+                            <!-- User list loaded via main.js -->
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="../assets/js/main.js"></script>
+</body>
+</html>

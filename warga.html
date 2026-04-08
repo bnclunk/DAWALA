@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Warga - DAWALA (Data Warga & Layanan Administrasi)</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5); display: none; align-items: center;
+            justify-content: center; z-index: 1000; backdrop-filter: blur(4px);
+        }
+        .modal-content {
+            background: white; width: 100%; max-width: 850px;
+            border-radius: 1rem; padding: 2rem; box-shadow: var(--shadow); max-height: 92vh; overflow-y: auto;
+        }
+        .table-card {
+            background: var(--white); border-radius: 1rem; border: 1px solid var(--border);
+            overflow: hidden; margin-top: 1.5rem;
+        }
+        table { width: 100%; border-collapse: collapse; font-size: 0.75rem; min-width: 1800px; }
+        th { background: #f8fafc; padding: 1rem; text-align: left; font-weight: 600; color: #64748b; border-bottom: 1px solid var(--border); }
+        td { padding: 1rem; border-bottom: 1px solid #f1f5f9; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        @media (max-width: 640px) { .form-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="sidebar-overlay"></div>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="sidebar-brand-main">
+                    <div class="sidebar-logo">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    </div>
+                    <h2>DAWALA</h2>
+                </div>
+                <p id="sidebar-neighborhood-name" class="sidebar-brand-desc"></p>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+                    Dashboard
+                </a>
+                <a href="warga.html" class="nav-item active">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 01-9-3.812M13.732 11.108a2 2 0 112.828 2.828M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    Data Warga
+                </a>
+                <a href="keuangan.html" class="nav-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12V7H5a2 2 0 0 1 0-4h14v4" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5v14a2 2 0 0 0 2 2h16v-5" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 12a2 2 0 0 0 0 4h4v-4h-4z" /></svg>
+                    Kas Lingkungan
+                </a>
+                <a href="galeri.html" class="nav-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h14a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                    Galeri Kegiatan
+                </a>
+                <a href="pengaturan.html" class="nav-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                    Pengaturan
+                </a>
+            </nav>
+            
+            <div class="sidebar-extras">
+                <p class="extra-label">Support Us!</p>
+                <div class="extra-grid cols-4">
+                    <a href="../assets/img/logo e wallet/QRIS.jpeg" class="extra-btn" target="_blank"><img src="../assets/img/logo e wallet/QRIS.png" alt="Gopay" style="height: 20px;">QRIS</a>                    
+                    <a href="https://saweria.co/golodogmaijoh" class="extra-btn" target="_blank"><img src="../assets/img/logo e wallet/saweria.png" alt="Saweria" style="height: 20px;">SAWERIA</a>
+                </div>
+                <p class="extra-label" style="margin-top: 1rem;">Social Media</p>
+                <div class="extra-grid cols-4">
+                    <a href="https://www.facebook.com/DadynyaKeyziaDarraNabilla" class="extra-btn" target="_blank"><img src="../assets/img/sosial media/facebook.png" alt="Facebook" style="height: 20px;"></a>
+                    <a href="https://www.instagram.com/om.bnclunk" class="extra-btn" target="_blank"><img src="../assets/img/sosial media/instagram.png" alt="Instagram" style="height: 20px;"></a>
+                    <a href="https://www.tiktok.com/@asep.supriatna.bnclunk" class="extra-btn" target="_blank"><img src="../assets/img/sosial media/tiktok.png" alt="TikTok" style="height: 20px;"></a>
+                    <a href="https://www.youtube.com/@OmBnclunk" class="extra-btn" target="_blank"><img src="../assets/img/sosial media/youtube.png" alt="YouTube" style="height: 20px;"></a>
+                </div>
+                <p style="font-size: 0.65rem; color: var(--text-muted); font-weight: 700; margin-top: 1rem; text-align: center; line-height: 1.4; opacity: 0.8;">DAWALA<br>(Data Warga & Layanan Administrasi)</p>
+            </div>
+
+            <div style="margin-top: 2rem; border-top: 1px solid var(--border); padding-top: 1.5rem;">
+                <a href="login.html" class="nav-item" style="color: var(--danger);">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+                    Keluar Admin
+                </a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="mobile-header">
+                <div class="mobile-brand">
+                    <div class="sidebar-logo">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    </div>
+                    <h2>DAWALA (Data Warga & Layanan Administrasi)</h2>
+                </div>
+                <button class="mobile-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                </button>
+            </header>
+
+            <header class="header-flex">
+                <div class="header-title">
+                    <h1>Data Kependudukan</h1>
+                    <p id="warga-welcome-desc">Kelola daftar warga di seluruh unit RT.</p>
+                </div>
+                <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+                    <div class="search-wrapper" style="min-width: 350px;">
+                        <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        <input type="text" id="search-warga" class="search-input" placeholder="Cari Nama atau NIK..." oninput="WargaController.render()">
+                    </div>
+                    <select id="filter-rt-warga" class="form-control" style="width: 130px;" onchange="WargaController.render()">
+                        <option value="">Semua Unit</option>
+                    </select>
+                    <select id="filter-usia-warga" class="form-control" style="width: 150px;" onchange="WargaController.render()">
+                        <option value="">Semua Usia</option>
+                        <option value="balita">Bayi/Balita (0-4th)</option>
+                        <option value="anak">Anak-anak (5-11th)</option>
+                        <option value="remaja">Remaja (12-18th)</option>
+                        <option value="dewasa">Dewasa (19-59th)</option>
+                        <option value="lansia">Lansia (60th+)</option>
+                    </select>
+                    <select id="filter-kelurahan-warga" class="form-control" style="width: 150px;" onchange="WargaController.render()">
+                        <option value="">Semua Wilayah</option>
+                        <option value="Babakan">Babakan</option>
+                        <option value="Luar Babakan">Luar Babakan</option>
+                    </select>
+                    <select id="filter-hunian-warga" class="form-control" style="width: 130px;" onchange="WargaController.render()">
+                        <option value="">Semua Hunian</option>
+                        <option value="Tetap">Tetap</option>
+                        <option value="Kontrak">Kontrak</option>
+                    </select>
+                    <select id="filter-finansial-warga" class="form-control" style="width: 150px;" onchange="WargaController.render()">
+                        <option value="">Semua Finansial</option>
+                        <option value="Mampu">Mampu</option>
+                        <option value="Tidak Mampu">Tidak Mampu</option>
+                    </select>
+                    <select id="filter-kondisi-warga" class="form-control" style="width: 130px;" onchange="WargaController.render()">
+                        <option value="">Semua Kondisi</option>
+                        <option value="Difabel">Difabel</option>
+                        <option value="-">-</option>
+                    </select>
+                    <select id="filter-yatim-warga" class="form-control" style="width: 130px;" onchange="WargaController.render()">
+                        <option value="">Semua Status</option>
+                        <option value="Yatim">Yatim</option>
+                        <option value="-">-</option>
+                    </select>
+                    <select id="filter-kehamilan-warga" class="form-control" style="width: 140px;" onchange="WargaController.render()">
+                        <option value="">Semua Kehamilan</option>
+                        <option value="Hamil">Hamil</option>
+                        <option value="-">-</option>
+                    </select>
+                    <button class="btn-primary" onclick="WargaController.export()" style="background-color: var(--success); display: flex; align-items: center; gap: 0.5rem;" title="Export Excel">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        Export
+                    </button>
+                    <button class="btn-primary" onclick="WargaController.open()" style="white-space: nowrap;">+ Tambah Warga</button>
+                </div>
+            </header>
+
+            <div class="table-card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Domisili</th>
+                            <th>Nama</th>
+                            <th>No KK</th>
+                            <th>NIK</th>
+                            <th>Tempat/Tgl Lahir</th>
+                            <th>L/P</th>
+                            <th>Alamat</th> 
+                            <th>RT</th>
+                            <th>RW</th>
+                            <th>Kelurahan</th>
+                            <th>Kecamatan</th>
+                            <th>Agama</th>
+                            <th>S. Nikah</th>
+                            <th>Pekerjaan</th>
+                            <th>WNA/WNI</th>
+                            <th>Hunian</th>
+                            <th>Finansial</th>
+                            <th>Kondisi</th>
+                            <th>Yatim</th>
+                            <th>Kehamilan</th>
+                            <th style="text-align: center;">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-warga"></tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal-overlay" id="modal-warga">
+        <div class="modal-content">
+            <h3 style="margin-bottom: 1.5rem; border-bottom: 2px solid var(--primary); padding-bottom: 0.5rem;">Formulir Data Kependudukan</h3>
+            <form id="form-warga" class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Domisili</label>
+                    <select id="input-rt" class="form-control" required></select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Nama Lengkap</label>
+                    <input type="text" id="input-nama" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">No KK</label>
+                    <input type="number" id="input-no-kk" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">NIK</label>
+                    <input type="number" id="input-nik" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Tempat Lahir</label>
+                    <input type="text" id="input-tempat-lahir" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Tanggal Lahir</label>
+                    <input type="date" id="input-tgl-lahir" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Jenis Kelamin</label>
+                    <select id="input-jk" class="form-control" required>
+                        <option value="Laki-laki">Laki-laki</option>
+                        <option value="Perempuan">Perempuan</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Agama</label>
+                    <select id="input-agama" class="form-control" required>
+                        <option value="Islam">Islam</option>
+                        <option value="Kristen">Kristen</option>
+                        <option value="Katolik">Katolik</option>
+                        <option value="Hindu">Hindu</option>
+                        <option value="Budha">Budha</option>
+                        <option value="Khonghucu">Khonghucu</option>
+                    </select>
+                </div>
+                <div class="form-group" style="grid-column: span 2;">
+                    <label class="form-label">Alamat Lengkap</label>
+                    <textarea id="input-alamat" class="form-control" rows="2" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">RT (Angka)</label>
+                    <input type="number" id="input-rt-num" class="form-control" placeholder="Contoh: 001" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">RW (Angka)</label>
+                    <input type="number" id="input-rw-num" class="form-control" placeholder="Contoh: 001" required>
+                </div>
+                <div class="form-group"><label class="form-label">Kelurahan</label><input type="text" id="input-kelurahan" class="form-control" value="Kemang Jaya" required></div>
+                <div class="form-group"><label class="form-label">Kecamatan</label><input type="text" id="input-kecamatan" class="form-control" value="Mampang Prapatan" required></div>
+                <div class="form-group"><label class="form-label">Pekerjaan</label><input type="text" id="input-pekerjaan" class="form-control" required></div>
+                <div class="form-group">
+                    <label class="form-label">Status Perkawinan</label>
+                    <select id="input-perkawinan" class="form-control" required>
+                        <option value="Belum Kawin">Belum Kawin</option>
+                        <option value="Kawin">Kawin</option>
+                        <option value="Cerai Hidup">Cerai Hidup</option>
+                        <option value="Cerai Mati">Cerai Mati</option>
+                    </select>
+                </div>
+                <div class="form-group"><label class="form-label">Kewarganegaraan</label><select id="input-kwn" class="form-control"><option value="WNI">WNI</option><option value="WNA">WNA</option></select></div>
+                <div class="form-group"><label class="form-label">Status Hunian</label><select id="input-status-hunian" class="form-control"><option value="Tetap">Tetap</option><option value="Kontrak">Kontrak</option></select></div>
+                <div class="form-group"><label class="form-label">Finansial</label><select id="input-finansial" class="form-control"><option value="Mampu">Mampu</option><option value="Tidak Mampu">Tidak Mampu</option></select></div>
+                <div class="form-group"><label class="form-label">Kondisi</label><select id="input-kondisi" class="form-control"><option value="-">-</option><option value="Difabel">Difabel</option></select></div>
+                <div class="form-group"><label class="form-label">Status Yatim</label><select id="input-yatim" class="form-control"><option value="-">-</option><option value="Yatim">Yatim</option></select></div>
+                <div class="form-group"><label class="form-label">Status Kehamilan</label><select id="input-kehamilan" class="form-control"><option value="-">-</option><option value="Hamil">Hamil</option></select></div>
+                
+                <div style="grid-column: span 2; display: flex; gap: 1rem; margin-top: 1rem;">
+                    <button type="button" class="btn-primary" onclick="WargaController.close()" style="background: #94a3b8;">Batal</button>
+                    <button type="submit" id="btn-save-warga" class="btn-primary">Simpan Data Warga</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

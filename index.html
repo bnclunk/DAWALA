@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Publik - DAWALA</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        .main-content {
+            margin-left: 0 !important;
+            padding: 1.5rem 5% 4rem 5% !important;
+        }
+        .public-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .btn-login {
+            background: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.875rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .table-card {
+            background: var(--white);
+            border-radius: 0.75rem;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            margin-top: 0;
+        }
+
+        .card-header {
+            padding: 0.75rem 1.125rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        @media (min-width: 1280px) {
+            .content-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        .running-text-container {
+            background: var(--primary);
+            color: white;
+            padding: 0.5rem 0;
+            overflow: hidden;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 999;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .running-text-content {
+            display: inline-block;
+            white-space: nowrap;
+            animation: marquee 20s linear infinite;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(100vw); }
+            100% { transform: translateX(-100%); }
+        }
+    </style>
+</head>
+
+<body>
+
+<main class="main-content">
+
+    <header class="public-header">
+        <div class="header-title">
+            <h1 id="public-neighborhood-name">Informasi Lingkungan</h1>
+            <p id="public-address">Memuat data...</p>
+        </div>
+
+        <a href="login.html" class="btn-login">
+            Login Pengurus
+        </a>
+    </header>
+
+    <!-- STATS -->
+    <section class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-info">
+                <p>Saldo Kas</p>
+                <h3 id="total-saldo">-</h3>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-info">
+                <p>Total Warga</p>
+                <h3 id="total-warga-count">-</h3>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-info">
+                <p>Total KK</p>
+                <h3 id="total-kk-count">-</h3>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTENT -->
+    <section class="content-grid">
+        <div class="table-card">
+            <div class="card-header">
+                <h2>Gender</h2>
+            </div>
+            <div id="gender-chart-container"></div>
+        </div>
+    </section>
+
+</main>
+
+<!-- RUNNING TEXT -->
+<div class="running-text-container">
+    <div class="running-text-content" id="running-text"></div>
+</div>
+
+<script src="assets/js/main.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    // ✅ SAFE LOCAL STORAGE
+    let settings;
+    try {
+        settings = JSON.parse(localStorage.getItem('settings'));
+    } catch {
+        settings = null;
+    }
+
+    settings = settings || {
+        neighborhoodName: "RW Default",
+        address: "Alamat belum diatur"
+    };
+
+    // SET TEXT
+    document.getElementById('public-neighborhood-name').innerText = settings.neighborhoodName;
+    document.getElementById('public-address').innerText = settings.address;
+
+    // RUNNING TEXT
+    const runText = `Selamat datang di ${settings.neighborhoodName} - ${settings.address}`;
+    document.getElementById('running-text').innerText = runText;
+
+});
+</script>
+
+</body>
+</html>

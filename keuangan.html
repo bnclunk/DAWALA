@@ -1,0 +1,486 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kas Keuangan - DAWALA (Data Warga & Layanan Administrasi)</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* Styling khusus untuk halaman Keuangan */
+        
+        .balance-card-featured {
+            background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+            height: 100%;
+        }
+
+        .balance-card-featured h2 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin: 0.5rem 0 0 0;
+            letter-spacing: -0.025em;
+        }
+
+        .balance-card-featured p {
+            margin: 0;
+            font-weight: 500;
+            opacity: 0.9;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .finance-summary-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (min-width: 1024px) {
+            .finance-summary-grid {
+                grid-template-columns: 2fr 1fr 1fr;
+            }
+        }
+
+        .table-card {
+            background: var(--white, #ffffff);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            border: 1px solid var(--border, #e2e8f0);
+            overflow: hidden;
+            margin-top: 1.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+
+        th {
+            background: #f8fafc;
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: middle;
+            color: #334155;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background-color: #f8fafc;
+        }
+
+        .amount-in {
+            color: #10b981;
+            font-weight: 700;
+        }
+
+        .amount-out {
+            color: #ef4444;
+            font-weight: 700;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-success { background-color: #dcfce7; color: #166534; }
+        .badge-danger { background-color: #fee2e2; color: #991b1b; }
+
+        /* Action Bar Styles */
+        .action-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .search-wrapper {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            font-size: 0.875rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            box-sizing: border-box;
+        }
+
+        .search-input:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            width: 18px;
+            height: 18px;
+        }
+
+        .filter-select {
+            padding: 0.75rem 2.5rem 0.75rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            background-color: white;
+            font-size: 0.875rem;
+            color: #334155;
+            cursor: pointer;
+            outline: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.75rem center;
+            background-repeat: no-repeat;
+            background-size: 1.25em 1.25em;
+        }
+
+        .btn-primary {
+            background-color: #4f46e5;
+            color: white;
+            border: none;
+            padding: 0.625rem 1.25rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background-color 0.2s;
+            text-decoration: none;
+            width: auto;
+        }
+
+        .btn-primary:hover {
+            background-color: #4338ca;
+        }
+
+        .action-btn {
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid #e2e8f0;
+            background: white;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .action-btn:hover {
+            background: #f1f5f9;
+            color: #0f172a;
+            border-color: #cbd5e1;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-width: 480px;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            animation: modalPop 0.2s ease-out;
+        }
+
+        @keyframes modalPop {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .form-group-modal {
+            margin-bottom: 1rem;
+        }
+
+        .form-input-modal {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar-overlay"></div>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="sidebar-brand-main">
+                    <div class="sidebar-logo">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    </div>
+                    <h2>DAWALA</h2>
+                </div>
+                <p id="sidebar-neighborhood-name" class="sidebar-brand-desc"></p>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+                    Dashboard
+                </a>
+                <a href="warga.html" class="nav-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 01-9-3.812M13.732 11.108a2 2 0 112.828 2.828M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    Data Warga
+                </a>
+                <a href="keuangan.html" class="nav-item active">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12V7H5a2 2 0 0 1 0-4h14v4" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5v14a2 2 0 0 0 2 2h16v-5" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 12a2 2 0 0 0 0 4h4v-4h-4z" /></svg>
+                    Kas Lingkungan
+                </a>
+                <a href="galeri.html" class="nav-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h14a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                    Galeri Kegiatan
+                </a>
+                <a href="pengaturan.html" class="nav-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                    Pengaturan
+                </a>
+            </nav>
+            
+            <div class="sidebar-extras">
+                <p class="extra-label">Support Us!</p>
+                <div class="extra-grid cols-4">
+                    <a href="../assets/img/logo e wallet/QRIS.jpeg" class="extra-btn" target="_blank"><img src="../assets/img/logo e wallet/QRIS.png" alt="Gopay" style="height: 20px;">QRIS</a>                    
+                    <a href="https://saweria.co/golodogmaijoh" class="extra-btn" target="_blank"><img src="../assets/img/logo e wallet/saweria.png" alt="Saweria" style="height: 20px;">SAWERIA</a>
+                </div>
+                <p class="extra-label" style="margin-top: 1rem;">Social Media</p>
+                <div class="extra-grid cols-4">
+                    <a href="https://www.facebook.com/DadynyaKeyziaDarraNabilla" class="extra-btn" target="_blank"><img src="../assets/img/sosial media/facebook.png" alt="Facebook" style="height: 20px;"></a>
+                    <a href="https://www.instagram.com/om.bnclunk" class="extra-btn" target="_blank"><img src="../assets/img/sosial media/instagram.png" alt="Instagram" style="height: 20px;"></a>
+                    <a href="https://www.tiktok.com/@asep.supriatna.bnclunk" class="extra-btn" target="_blank"><img src="../assets/img/sosial media/tiktok.png" alt="TikTok" style="height: 20px;"></a>
+                    <a href="https://www.youtube.com/@OmBnclunk" class="extra-btn" target="_blank"><img src="../assets/img/sosial media/youtube.png" alt="YouTube" style="height: 20px;"></a>
+                </div>
+                <p style="font-size: 0.65rem; color: var(--text-muted); font-weight: 700; margin-top: 1rem; text-align: center; line-height: 1.4; opacity: 0.8;">DAWALA<br>(Data Warga & Layanan Administrasi)</p>
+            </div>
+
+            <div style="margin-top: 2rem; border-top: 1px solid var(--border); padding-top: 1.5rem;">
+                <a href="login.html" class="nav-item" style="color: var(--danger);">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+                    Keluar Admin
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="mobile-header">
+                <div class="mobile-brand">
+                    <div class="sidebar-logo">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    </div>
+                    <h2>DAWALA (Data Warga & Layanan Administrasi)</h2>
+                </div>
+                <button class="mobile-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                </button>
+            </header>
+            <header class="header-flex">
+                <div class="header-title">
+                    <h1>Kas Keuangan</h1>
+                    <p id="keuangan-welcome-desc">Kelola pemasukan dan pengeluaran warga secara transparan.</p>
+                </div>
+            </header>
+
+            <!-- Finance Summary Grid -->
+            <div class="finance-summary-grid">
+                <!-- Featured Balance -->
+                <div class="balance-card-featured">
+                    <div>
+                        <p>Total Saldo Saat Ini</p>
+                        <h2 id="total-saldo">Rp -</h2>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.2; transform: rotate(15deg);"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #ecfdf5; color: #10b981;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                    </div>
+                    <div class="stat-info">
+                        <p style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Total Masuk</p>
+                        <h3 id="total-masuk" style="font-size: 1.125rem; font-weight: 800;">Rp -</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #fef2f2; color: #ef4444;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"></polyline><polyline points="17 18 23 18 23 12"></polyline></svg>
+                    </div>
+                    <div class="stat-info">
+                        <p style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Total Keluar</p>
+                        <h3 id="total-keluar" style="font-size: 1.125rem; font-weight: 800;">Rp -</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Bar -->
+            <div class="action-bar">
+                <div class="search-wrapper">
+                    <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" class="search-input" placeholder="Cari keterangan transaksi...">
+                </div>
+                <select id="filter-year" class="filter-select">
+                    <option value="">Semua Tahun</option>
+                    <!-- Populated by JS -->
+                </select>
+                <select id="filter-month" class="filter-select">
+                    <option value="">Semua Bulan</option>
+                    <option value="1">Januari</option>
+                    <option value="2">Februari</option>
+                    <option value="3">Maret</option>
+                    <option value="4">April</option>
+                    <option value="5">Mei</option>
+                    <option value="6">Juni</option>
+                    <option value="7">Juli</option>
+                    <option value="8">Agustus</option>
+                    <option value="9">September</option>
+                    <option value="10">Oktober</option>
+                    <option value="11">November</option>
+                    <option value="12">Desember</option>
+                </select>
+                <select id="filter-type" class="filter-select">
+                    <option value="">Semua Jenis</option>
+                    <option value="Masuk">Pemasukan</option>
+                    <option value="Keluar">Pengeluaran</option>
+                </select>
+                <select id="filter-rt" class="filter-select">
+                    <option value="">Semua RT</option>
+                    <option value="RT 01">RT 01</option>
+                    <option value="RT 02">RT 02</option>
+                    <option value="RT 03">RT 03</option>
+                    <option value="RT 04">RT 04</option>
+                </select>
+                <button class="btn-primary" onclick="KeuanganController.exportData()" style="background-color: #10b981;" title="Export Excel">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    Export
+                </button>
+                <button class="btn-primary" onclick="KeuanganController.openModal()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    Tambah
+                </button>
+            </div>
+
+            <!-- Data Table -->
+            <div class="table-card">
+                <div style="padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                    <h3 style="margin: 0; font-size: 1.125rem; font-weight: 700;">Riwayat Transaksi</h3>
+                    <span style="font-size: 0.875rem; color: var(--text-muted);">Terurut dari yang terbaru</span>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tanggal</th>
+                                <th>Jenis</th>
+                                <th>Keterangan</th>
+                                <th>Unit RT</th>
+                                <th style="text-align: right;">Jumlah</th>
+                                <th style="text-align: right;">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Loaded from main.js -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Modal Catat Transaksi -->
+    <div id="modal-add-transaksi" class="modal-overlay">
+        <div class="modal-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h3 style="margin: 0; font-size: 1.25rem; font-weight: 700;">Catat Transaksi Baru</h3>
+                <button onclick="KeuanganController.closeModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #64748b;">&times;</button>
+            </div>
+            <form id="form-add-transaksi">
+                <div class="form-group-modal">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.875rem;">Tanggal</label>
+                    <input type="date" id="input-date" class="form-input-modal" required>
+                </div>
+                <div class="form-group-modal">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.875rem;">Jenis Transaksi</label>
+                    <select id="input-type" class="form-input-modal">
+                        <option value="Masuk">Pemasukan (Masuk)</option>
+                        <option value="Keluar">Pengeluaran (Keluar)</option>
+                    </select>
+                </div>
+                <div class="form-group-modal">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.875rem;">Jumlah (Rp)</label>
+                    <input type="number" id="input-amount" class="form-input-modal" placeholder="Contoh: 500000" required>
+                </div>
+                <div class="form-group-modal">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.875rem;">Unit RT</label>
+                    <select id="input-rt" class="form-input-modal"></select>
+                </div>
+                <div class="form-group-modal">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.875rem;">Keterangan</label>
+                    <textarea id="input-desc" class="form-input-modal" rows="3" placeholder="Contoh: Iuran kebersihan bulan Oktober" required></textarea>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 1rem;">Simpan Transaksi</button>
+            </form>
+        </div>
+    </div>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

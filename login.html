@@ -1,0 +1,231 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Pengurus - DAWALA</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --bg-light: #f8fafc;
+            --white: #ffffff;
+            --shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+
+        body {
+            background-color: var(--bg-light);
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+        }
+
+        .auth-wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .login-card {
+            background: var(--white);
+            width: 100%;
+            max-width: 400px;
+            padding: 2.5rem;
+            border-radius: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .text-center {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 240px;
+            height: 240px;
+            background: #eef2ff;
+            color: var(--primary);
+            border-radius: 20px;
+            margin-bottom: 0.025rem;
+        }
+
+        .brand-name {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin: 0 0 0.5rem 0;
+            letter-spacing: -0.025em;
+        }
+
+        .brand-desc {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: all 0.2s;
+            box-sizing: border-box;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 0.875rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            margin-top: 1.5rem;
+        }
+
+        .btn:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .footer-links {
+            margin-top: 1.5rem;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.875rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-wrapper">
+        <div class="login-card">
+            <div class="text-center">
+                <div id="login-logo-icon" class="logo-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                </div>                
+                <p id="login-neighborhood-name" style="font-weight: 600; margin-top: 0.25rem; margin-bottom: 0.25rem;"></p>
+                <p id="login-address" style="font-size: 0.8rem; color: var(--text-muted); margin: 0;"></p>
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="label">Username</label>
+                    <input type="text" id="username" class="input-field" placeholder="Masukkan username" required>
+                </div>
+                <div class="form-group">
+                    <label class="label">Kata Sandi</label>
+                    <input type="password" id="password" class="input-field" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="btn">Masuk ke Panel</button>
+            </form>
+
+            <div class="footer-links" style="justify-content: center;">
+                <a href="index.html">Akses Publik</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Load neighborhood info
+            const DEFAULT_SETTINGS = {
+                neighborhoodName: 'RW 07 Kelurahan Babakan',
+                address: 'Jl. Kemang Raya No. 123, Jakarta Selatan',
+                password: 'admin123',
+                logo: null
+            };
+            const settings = JSON.parse(localStorage.getItem('settings')) || DEFAULT_SETTINGS;
+            const nameEl = document.getElementById('login-neighborhood-name');
+            const addressEl = document.getElementById('login-address');
+            if (nameEl) nameEl.innerText = settings.neighborhoodName;
+            if (addressEl) addressEl.innerText = settings.address;
+
+            // Load logo
+            const logoEl = document.getElementById('login-logo-icon');
+            if (logoEl && settings.logo) {
+                logoEl.innerHTML = `<img src="${settings.logo}" alt="Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px;">`;
+                logoEl.style.background = 'transparent';
+            }
+
+            // Handle login form
+            document.getElementById('loginForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+
+                try {
+                    const res = await fetch('/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username, password })
+                    });
+                    
+                    const data = await res.json();
+                    
+                    if (res.ok) {
+                        localStorage.setItem('currentUser', JSON.stringify(data.user));
+                        window.location.href = 'dashboard.html';
+                    } else {
+                        alert(data.error || 'Login gagal');
+                    }
+                } catch (err) {
+                    alert('Koneksi server gagal');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

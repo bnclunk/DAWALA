@@ -1,0 +1,453 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - DAWALA</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* Styling khusus untuk Dashboard */
+        .table-card {
+            background: var(--white);
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            margin-top: 0;
+        }
+
+        .card-header {
+            padding: 0.75rem 1.125rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+
+        th {
+            background: #f8fafc;
+            padding: 1rem 1.5rem;
+            text-align: left;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        td {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: middle;
+            color: #334155;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background-color: #f8fafc;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-success { background-color: #dcfce7; color: #166534; }
+        .badge-warning { background-color: #fef9c3; color: #854d0e; }
+        .badge-danger { background-color: #fee2e2; color: #991b1b; }
+
+        /* Grid for content below stats */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        @media (min-width: 1280px) {
+            .content-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            .table-card.full-width {
+                grid-column: span 2 / span 2;
+            }
+        }
+
+        /* Chart Styles */
+        .chart-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+        }
+        .chart-row:last-child {
+            margin-bottom: 0;
+        }
+        .chart-label {
+            width: 120px;
+            font-weight: 600;
+            color: var(--text-muted);
+            flex-shrink: 0;
+            font-size: 0.8125rem;
+        }
+        .chart-bar-wrapper {
+            flex-grow: 1;
+            background-color: #f1f5f9;
+            border-radius: 4px;
+        }
+        .chart-bar {
+            height: 24px;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            transition: width 0.5s ease-in-out;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+
+        /* Pie Chart Styles */
+        .pie-chart-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .pie-chart {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            position: relative;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.7rem;
+            margin-bottom: 0.4rem;
+        }
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+        }
+
+        /* Vertical Bar Chart Styles */
+        .v-chart-container {
+            display: flex;
+            align-items: flex-end;
+            height: 180px;
+            gap: 8px;
+            padding-bottom: 60px; /* Space for rotated labels */
+            border-bottom: 1px solid var(--border);
+        }
+        .v-bar-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            height: 100%;
+            position: relative;
+        }
+        .v-bar {
+            width: 100%;
+            border-radius: 4px 4px 0 0;
+            transition: height 0.5s ease;
+            min-height: 2px;
+        }
+        .v-label {
+            position: absolute;
+            bottom: -55px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-45deg);
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+            text-align: right;
+            width: 100px;
+            transform-origin: top center;
+        }
+        .v-value {
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--text-main);
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar-overlay"></div>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="sidebar-brand-main">
+                    <div class="sidebar-logo">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    </div>
+                    <h2>DAWALA</h2>
+                </div>
+                <p id="sidebar-neighborhood-name" class="sidebar-brand-desc"></p>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item active">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+                    Dashboard
+                </a>
+                <a href="warga.html" class="nav-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 01-9-3.812M13.732 11.108a2 2 0 112.828 2.828M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    Data Warga
+                </a>
+                <a href="keuangan.html" class="nav-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12V7H5a2 2 0 0 1 0-4h14v4" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5v14a2 2 0 0 0 2 2h16v-5" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 12a2 2 0 0 0 0 4h4v-4h-4z" /></svg>
+                    Kas Lingkungan
+                </a>
+                <a href="galeri.html" class="nav-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h14a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                    Galeri Kegiatan
+                </a>
+                <a href="pengaturan.html" class="nav-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                    Pengaturan
+                </a>
+            </nav>
+            
+            <div class="sidebar-extras">
+                <p class="extra-label">Support Us!</p>
+                <div class="extra-grid cols-4">
+                    <a href="../assets/img/logo e wallet/QRIS.jpeg" class="extra-btn" target="_blank"><img src="../assets/img/logo e wallet/QRIS.png" alt="Gopay" style="height: 20px;">QRIS</a>                    
+                    <a href="https://saweria.co/golodogmaijoh" class="extra-btn" target="_blank"><img src="../assets/img/logo e wallet/saweria.png" alt="Saweria" style="height: 20px;">SAWERIA</a>
+                </div>
+                <p class="extra-label" style="margin-top: 1rem;">Social Media</p>
+                <div class="extra-grid cols-4">
+                    <a href="https://www.facebook.com/DadynyaKeyziaDarraNabilla" class="extra-btn" target="_blank"><img src="../assets/img/sosial media/facebook.png" alt="Facebook" style="height: 20px;"></a>
+                    <a href="https://www.instagram.com/om.bnclunk" class="extra-btn" target="_blank"><img src="../assets/img/sosial media/instagram.png" alt="Instagram" style="height: 20px;"></a>
+                    <a href="https://www.tiktok.com/@asep.supriatna.bnclunk" class="extra-btn" target="_blank"><img src="../assets/img/sosial media/tiktok.png" alt="TikTok" style="height: 20px;"></a>
+                    <a href="https://www.youtube.com/@OmBnclunk" class="extra-btn" target="_blank"><img src="../assets/img/sosial media/youtube.png" alt="YouTube" style="height: 20px;"></a>
+                </div>
+                <p style="font-size: 0.65rem; color: var(--text-muted); font-weight: 700; margin-top: 1rem; text-align: center; line-height: 1.4; opacity: 0.8;">DAWALA<br>(Data Warga & Layanan Administrasi)</p>
+            </div>
+
+            <div style="margin-top: 2rem; border-top: 1px solid var(--border); padding-top: 1.5rem;">
+                <a href="login.html" class="nav-item" style="color: var(--danger);">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+                    Keluar Admin
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="mobile-header">
+                <div class="mobile-brand">
+                    <div class="sidebar-logo">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    </div>
+                    <h2>DAWALA</h2>
+                </div>
+                <button class="mobile-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                </button>
+            </header>
+            <header class="header-flex">
+                <div class="header-title">
+                    <h1>Halo, Pengurus Lingkungan!</h1>
+                    <p id="dashboard-welcome-desc">Selamat datang di panel kendali DAWALA.</p>
+                </div>
+            </header>
+
+            <!-- Stats: Menggunakan grid kolom yang disesuaikan lebarnya (narrow, wide, medium) -->
+            <section class="stats-grid">
+                <!-- BARIS 1 -->
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #ecfdf5; color: #10b981;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path><path d="M18 12a2 2 0 0 0 0 4h4v-4h-4z"></path></svg>
+                    </div>
+                    <div class="stat-info">
+                        <p>Saldo Kas</p>
+                        <h3 id="total-saldo">-</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #eef2ff; color: #4f46e5;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    </div>
+                    <div class="stat-info">
+                        <p>Total Warga</p>
+                        <h3 id="total-warga-count">-</h3>
+                        <p id="total-warga-breakdown" style="font-size: 0.85rem; color: var(--text-main); font-weight: 600; margin-top: 0.25rem;"></p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #fefce8; color: #a16207;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                    </div>
+                    <div class="stat-info">
+                        <p>Total KK</p>
+                        <h3 id="total-kk-count">-</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #f0fdf4; color: #16a34a;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    </div>
+                    <div class="stat-info">
+                        <p>Hunian Tetap</p>
+                        <h3 id="total-hunian-tetap">-</h3>
+                    </div>
+                </div>
+
+                <!-- BARIS 2 -->
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #fef2f2; color: #ef4444;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+                    </div>
+                    <div class="stat-info">
+                        <p>Warga Tidak Mampu</p>
+                        <h3 id="total-tidak-mampu">-</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #fff1f2; color: #f43f5e;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path></svg>
+                    </div>
+                    <div class="stat-info">
+                        <p>Warga Difabel</p>
+                        <h3 id="total-difabel">-</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #e0f2fe; color: #0369a1;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
+                    </div>
+                    <div class="stat-info">
+                        <p>Warga Yatim</p>
+                        <h3 id="total-yatim">-</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #fdf2f8; color: #db2777;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                    </div>
+                    <div class="stat-info">
+                        <p>Kehamilan</p>
+                        <h3 id="total-kehamilan">-</h3>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Lists -->
+            <section class="content-grid">
+                <div class="table-card">
+                    <div class="card-header">
+                        <h2 class="card-title" style="margin: 0; font-size: 1rem; font-weight: 800;">Gender</h2>
+                        <select id="gender-rt-filter" style="padding: 0.3rem 0.6rem; border: 1px solid var(--border); border-radius: 0.5rem; font-size: 0.75rem; outline: none; cursor: pointer;" onchange="DashboardController.renderAll()">
+                            <option value="">Semua Unit</option>
+                        </select>
+                    </div>
+                    <div id="gender-chart-container" style="padding: 1rem;">
+                        <!-- Gender chart rendered by JS -->
+                    </div>
+                </div>
+
+                <div class="table-card">
+                    <div class="card-header">
+                        <h2 class="card-title" style="margin: 0; font-size: 1rem; font-weight: 800;">Kelompok Usia</h2>
+                        <select id="age-rt-filter" style="padding: 0.3rem 0.6rem; border: 1px solid var(--border); border-radius: 0.5rem; font-size: 0.75rem; outline: none; cursor: pointer;" onchange="DashboardController.renderAll()">
+                            <option value="">Semua Unit</option>
+                        </select>
+                    </div>
+                    <div id="age-chart-container" style="padding: 1rem;">
+                        <!-- Age chart rendered by JS -->
+                    </div>
+                </div>
+
+                <div class="table-card">
+                    <div class="card-header">
+                        <h2 class="card-title" style="margin: 0; font-size: 1rem; font-weight: 800;">Wilayah</h2>
+                        <select id="kelurahan-rt-filter" style="padding: 0.3rem 0.6rem; border: 1px solid var(--border); border-radius: 0.5rem; font-size: 0.75rem; outline: none; cursor: pointer;" onchange="DashboardController.renderAll()">
+                        <option value="">Semua Wilayah</option>
+                        <option value="Babakan">Babakan</option>
+                        <option value="Luar Babakan">Luar Babakan</option>
+                        </select>
+                    </div>
+                    <div id="kelurahan-chart-container" style="padding: 1rem;"></div>
+                </div>
+
+                <div class="table-card">
+                    <div class="card-header">
+                        <h2 class="card-title" style="margin: 0; font-size: 1rem; font-weight: 800;">Hunian</h2>
+                        <select id="hunian-rt-filter" style="padding: 0.3rem 0.6rem; border: 1px solid var(--border); border-radius: 0.5rem; font-size: 0.75rem; outline: none; cursor: pointer;" onchange="DashboardController.renderAll()">
+                            <option value="">Semua Unit</option>
+                        </select>
+                    </div>
+                    <div id="hunian-chart-container" style="padding: 1rem;"></div>
+                </div>
+
+                <div class="table-card">
+                    <div class="card-header">
+                        <h2 class="card-title" style="margin: 0; font-size: 1rem; font-weight: 800;">Finansial</h2>
+                        <select id="finansial-rt-filter" style="padding: 0.3rem 0.6rem; border: 1px solid var(--border); border-radius: 0.5rem; font-size: 0.75rem; outline: none; cursor: pointer;" onchange="DashboardController.renderAll()">
+                            <option value="">Semua Unit</option>
+                        </select>
+                    </div>
+                    <div id="finansial-chart-container" style="padding: 1rem;"></div>
+                </div>
+
+                <div class="table-card">
+                    <div class="card-header">
+                        <h2 class="card-title" style="margin: 0; font-size: 1rem; font-weight: 800;">Yatim</h2>
+                        <select id="yatim-rt-filter" style="padding: 0.3rem 0.6rem; border: 1px solid var(--border); border-radius: 0.5rem; font-size: 0.75rem; outline: none; cursor: pointer;" onchange="DashboardController.renderAll()">
+                            <option value="">Semua Unit</option>
+                        </select>
+                    </div>
+                    <div id="yatim-chart-container" style="padding: 1rem;"></div>
+                </div>
+
+                <div class="table-card">
+                    <div class="card-header">
+                        <h2 class="card-title" style="margin: 0; font-size: 1rem; font-weight: 800;">Kondisi Warga</h2>
+                        <select id="kondisi-rt-filter" style="padding: 0.3rem 0.6rem; border: 1px solid var(--border); border-radius: 0.5rem; font-size: 0.75rem; outline: none; cursor: pointer;" onchange="DashboardController.renderAll()">
+                            <option value="">Semua Unit</option>
+                        </select>
+                    </div>
+                    <div id="kondisi-chart-container" style="padding: 1rem;"></div>
+                </div>
+
+                <div class="table-card">
+                    <div class="card-header">
+                        <h2 class="card-title" style="margin: 0; font-size: 1rem; font-weight: 800;">Kehamilan</h2>
+                        <select id="kehamilan-rt-filter" style="padding: 0.3rem 0.6rem; border: 1px solid var(--border); border-radius: 0.5rem; font-size: 0.75rem; outline: none; cursor: pointer;" onchange="DashboardController.renderAll()">
+                            <option value="">Semua Unit</option>
+                        </select>
+                    </div>
+                    <div id="kehamilan-chart-container" style="padding: 1rem;"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="../assets/js/main.js"></script>
+</body>
+</html>
