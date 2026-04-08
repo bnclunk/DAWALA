@@ -161,14 +161,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // SET TEXT
     document.getElementById('public-neighborhood-name').innerText = settings.neighborhoodName;
+    document.getElementById('sidebar-neighborhood-name').innerText = settings.neighborhoodName;
     document.getElementById('public-address').innerText = settings.address;
 
     // RUNNING TEXT
-    const runText = `Selamat datang di ${settings.neighborhoodName} - ${settings.address}`;
+    const date = new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    const runText = `Selamat datang di Portal Informasi Digital ${settings.neighborhoodName} • Hari ini: ${date} • Transparansi Data Warga & Kas Lingkungan Real-time • ${settings.address}`;
     document.getElementById('running-text').innerText = runText;
 
+    // Mobile toggle logic (copied from standard behavior)
+    document.querySelector('.mobile-toggle').addEventListener('click', () => {
+        document.querySelector('.sidebar').classList.toggle('is-open');
+        document.querySelector('.sidebar-overlay').classList.toggle('is-visible');
+    });
+    document.querySelector('.sidebar-overlay').addEventListener('click', () => {
+        document.querySelector('.sidebar').classList.remove('is-open');
+        document.querySelector('.sidebar-overlay').classList.remove('is-visible');
+    });
 });
 </script>
-
 </body>
 </html>
